@@ -1,9 +1,6 @@
 package com.wemingle_chat.chat.global.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -18,27 +15,45 @@ public class RabbitMQConfig {
 
     private static final String CHAT_QUEUE_NAME = "chat.queue";
     private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
-    private static final String ROUTING_KEY = "*.room.*";
+    private static final String CHAT_ROUTING_KEY = "*.room.*";
+    private static final String PRESENCE_QUEUE_NAME = "presence.queue";
+    private static final String PRESENCE_EXCHANGE_NAME = "presence.exchange";
+    private static final String ONLINE_ROUTING_KEY = "user.online.#";
 
     //Queue 등록
     @Bean
-    public Queue queue() {
-        return new Queue(CHAT_QUEUE_NAME, true);
+    Queue chatQueue() {
+        return QueueBuilder.durable(CHAT_QUEUE_NAME).build();
+    }
+    @Bean
+    Queue onlineQueue() {
+        return QueueBuilder.durable(PRESENCE_QUEUE_NAME).build();
     }
 
     //Exchange 등록
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(CHAT_EXCHANGE_NAME);
+    TopicExchange chatExchange() {
+        return ExchangeBuilder.topicExchange(CHAT_EXCHANGE_NAME).durable(true).build();
+    }
+    @Bean
+    TopicExchange presenceExchange() {
+        return ExchangeBuilder.topicExchange(PRESENCE_EXCHANGE_NAME).durable(true).build();
     }
 
     // Exchange와 Queue바인딩
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange){
+    Binding binding(Queue chatQueue, TopicExchange chatExchange){
         return BindingBuilder
-                .bind(queue)
-                .to(exchange)
-                .with(ROUTING_KEY);
+                .bind(chatQueue)
+                .to(chatExchange)
+                .with(CHAT_ROUTING_KEY);
+    }
+    @Bean
+    Binding onlineBinding(Queue onlineQueue, TopicExchange presenceExchange) {
+        return BindingBuilder
+                .bind(onlineQueue)
+                .to(presenceExchange)
+                .with(ONLINE_ROUTING_KEY);
     }
 
     // RabbitMQ와의 메시지 통신을 담당하는 클래스
@@ -54,7 +69,7 @@ public class RabbitMQConfig {
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory factory = new CachingConnectionFactory();
         factory.setHost("localhost");
-        factory.setPort(15672);
+        factory.setPort(5672);
         factory.setVirtualHost("/");
         factory.setUsername("guest");
         factory.setPassword("guest");

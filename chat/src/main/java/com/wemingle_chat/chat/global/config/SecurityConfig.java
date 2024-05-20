@@ -23,11 +23,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(httpRequest -> httpRequest
-                        .requestMatchers("/chat").permitAll()
+//                        .requestMatchers("/chat").permitAll()
 //                        .requestMatchers("/member/signup","member/signin").permitAll()
 //                        .requestMatchers("/nickname/**").permitAll()
 //                        .requestMatchers("/token").permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)

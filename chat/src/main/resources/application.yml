@@ -9,6 +9,17 @@ spring:
     username: guest
     password: guest
 
-logging:
-  level:
-    root: debug
+#logging:
+#  level:
+#    root: debug
+  cassandra:
+    schema-action: CREATE_IF_NOT_EXISTS
+
+cassandra:
+  keyspace-name: chatdata
+  contact-points: localhost
+  port: 9042
+  schema-action: NONE
+
+
+
