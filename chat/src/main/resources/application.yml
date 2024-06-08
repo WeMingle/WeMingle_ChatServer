@@ -9,9 +9,9 @@ spring:
     username: guest
     password: guest
 
-#logging:
-#  level:
-#    root: debug
+logging:
+  level:
+    root: debug
   cassandra:
     schema-action: CREATE_IF_NOT_EXISTS
 
@@ -21,5 +21,24 @@ cassandra:
   port: 9042
   schema-action: NONE
 
+#JWT
+jwt:
+  issuer: thrusum123@gmail.com
+  secret_key: ENC(GEvBTNbOBf8K0wL2KtWDdGD7+Pqpk9ck6uDFl1sIIlsVY0wNlcWrgxtNICCHrdAx/M+WiesQrOXdPfdQR2jC5TKBQoHG13i05CSF+uoL3H5Yk/v6buGKaBBBqM9AmQA6CBGsiq9ejQ2PR+Cdi09TRJo003DeJXeflkF5xhJ+vHHOgfLR7F3c2FW3Z610wI6m)
 
+#JASYPT
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+
+#s3
+cloud:
+  aws:
+    s3:
+      bucket: wemingle
+    stack.auto: false
+    region: ap-northeast-2
+    credentials:
+      accessKey: ENC(8Fi8YcNTxSrBsq3tXIPo9zhA3b/pujVTNFxEVfZGJPk=)
+      secretKey: ENC(LAY1JojjSdbTjhDpw1SCI0PAm4tdeMf7AlAwaa3QaML9pWBJW5Nt9KoAnNP6l/kpPrDJCTQ6h6Q=)
 

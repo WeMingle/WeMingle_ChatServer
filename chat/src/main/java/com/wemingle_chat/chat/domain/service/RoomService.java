@@ -32,7 +32,7 @@ public class RoomService {
     }
 
     public void enterChatRoom(RoomDto.enterRoom enterRoom) {
-        Room room = roomRepository.findById(enterRoom.getRoomId()).orElseThrow(() -> new NoSuchElementException("NOT FOUND CHAT ROOM BY ROOM ID"));
+        Room room = roomRepository.findByRoomId(enterRoom.getRoomId()).orElseThrow(() -> new NoSuchElementException("NOT FOUND CHAT ROOM BY ROOM ID"));
         room.getRoomMemberList().add(
                 Room.RoomMember.builder()
                         .memberId(enterRoom.getMemberId())
