@@ -25,26 +25,32 @@ public class Message {
     @Column
     private String roomId;
     @Column
+    private MessageType messageType;
+    @Column
     private String message;
     @Column
     private String sender;
     @Column
     private LocalDateTime sendTime;
     @Column
-    private List<String> readMember;
+    private Integer currentMemberCnt;
+    @Column
+    private List<String> unReadMember;
     @Column
     private List<String> picIdList;
     @Column
     private Objects sharedPostData; //todo 글 공유 객체
 
     @Builder
-    public Message(UUID id, String roomId, String message, String sender, LocalDateTime sendTime, List<String> readMember, List<String> picIdList, Objects sharedPostData) {
+    public Message(UUID id, String roomId, MessageType messageType, String message, String sender, LocalDateTime sendTime, Integer currentMemberCnt, List<String> unReadMember, List<String> picIdList, Objects sharedPostData) {
         this.id = id;
         this.roomId = roomId;
+        this.messageType = messageType;
         this.message = message;
         this.sender = sender;
         this.sendTime = sendTime;
-        this.readMember = readMember;
+        this.currentMemberCnt = currentMemberCnt;
+        this.unReadMember = unReadMember;
         this.picIdList = picIdList;
         this.sharedPostData = sharedPostData;
     }

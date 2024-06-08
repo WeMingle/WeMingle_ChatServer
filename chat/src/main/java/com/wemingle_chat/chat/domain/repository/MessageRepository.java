@@ -12,4 +12,7 @@ public interface MessageRepository extends CassandraRepository<Message, UUID> {
 
     @AllowFiltering
     List<Message> findBySendTimeAfter(LocalDateTime sendTime);
+
+    @AllowFiltering
+    List<Message> findByUnReadMemberAndRoomId(String roomId, String memberId);
 }
